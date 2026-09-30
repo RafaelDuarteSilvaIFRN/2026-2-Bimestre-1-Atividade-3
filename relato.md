@@ -23,7 +23,7 @@ O Docker foi utilizado para criar um ambiente padronizado para executar os códi
 
 > qual a configuração do docker?
 
-<img width="337" height="190" alt="image" src="https://github.com/user-attachments/assets/b16942d9-600f-44a6-abb9-b2a0d6242eaa" />
+<img width="259" height="126" alt="image" src="https://github.com/user-attachments/assets/c9e4d7c2-dead-4ce5-9469-ef6a4aba5182" />
 
 para criar as imagens foi utilizado:
 
@@ -35,14 +35,13 @@ para executar os programas:
 
 ### Comunicação entre tarefas com linhas de execução no mesmo processo
 
-
 > texto explicando o código
 
 O arquivo sequencial.exs apresenta uma execução sequencial. O programa possui uma função responsável por produzir os dados e outra responsável por consumi-los. A função produzir_dados gera uma lista contendo 100 números aleatórios entre 0 e 110. Em seguida, essa lista é retornada e armazenada pela função principal. Depois, a função consumir_dados recebe essa lista e utiliza Enum.sum para calcular a soma dos valores. Por fim, a função principal controla a ordem de execução, mostrando as mensagens de início e finalização.
 
 > mostrar o código completo
 
-<img width="282" height="559" alt="image" src="https://github.com/user-attachments/assets/8de6a752-6db3-4ec7-b00a-f6b9d1dff3e4" />
+<img width="252" height="379" alt="image" src="https://github.com/user-attachments/assets/cc17f251-7dca-4cfb-8400-5cd604c569ee" />
 
 > explicar como foi executado
 
@@ -50,30 +49,42 @@ O código foi executado utilizando o Docker. O arquivo exemplo_main.exs foi conf
 
 > mostrar as saídas do terminal
 
-<img width="154" height="77" alt="image" src="https://github.com/user-attachments/assets/2f3b7c06-3f48-4754-b248-597bc33efaed" />
+<img width="609" height="53" alt="image" src="https://github.com/user-attachments/assets/cc96c619-1221-4f69-a9c9-15510ce5d2d1" />
 
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
 
-O processo principal poderia terminar antes dos outros processos Na primeira versão do código paralelo, o processo principal poderia finalizar antes que o produtor e o consumidor terminassem suas atividades. Inicialmente foi utilizado Process.sleep para criar um tempo de espera. Solução: o código foi alterado para utilizar send e receive. O consumidor envia uma mensagem ao processo principal quando termina, permitindo que o processo principal aguarde corretamente a conclusão da tarefa.
+Durante a execução do código sequencial, não foram encontrados problemas relacionados à lógica do programa. Entretanto, foram encontrados problemas na configuração e execução do Docker. Inicialmente, o caminho utilizado no Dockerfile não correspondia à localização dos arquivos de Elixir, sendo necessário alterar o comando COPY para COPY src/Elixir/ .. Também foi necessário executar o comando docker build no diretório correto, onde se encontra o Dockerfile.
 
 ### Comunicação entre tarefas em processos diferentes no mesmo computador
 
-FIXME
 > texto explicando o código
+
+O código paralelo.exs utiliza processos diferentes para realizar as tarefas de produção e consumo dos dados. Um processo é responsável por gerar os números aleatórios, enquanto outro processo recebe esses dados e calcula a soma. Para criar os processos, é utilizada a função spawn. A comunicação entre eles é realizada através das funções send e receive. O processo produtor utiliza send para enviar os dados ao consumidor, enquanto o consumidor utiliza receive para aguardar e receber essa mensagem. Depois de realizar o cálculo, o consumidor envia uma mensagem ao processo principal informando que terminou sua execução. Dessa forma, o processo principal consegue aguardar corretamente a conclusão do consumidor.
+
 > mostrar o código completo
 
-FIXME
+<img width="415" height="823" alt="image" src="https://github.com/user-attachments/assets/0af26d35-ffb1-4baf-aed7-d6d84b964dde" />
+
 > explicar como foi executado
-> mostrar as saídas do terminal
+
+O código foi executado utilizando o Docker. O arquivo exemplo_main.exs foi configurado para carregar o paralelo.exs:
+
+<img width="221" height="74" alt="image" src="https://github.com/user-attachments/assets/8536c2bb-d243-491d-a782-6dc494b9f49d" />
+
 > mostrar as saídas do terminal
 
-FIXME
+<img width="612" height="195" alt="image" src="https://github.com/user-attachments/assets/7cbc23dd-a15f-4d17-8534-355f1fd229a0" />
+
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
+
+Na primeira versão, foi utilizado Process.sleep para esperar os processos terminarem. Porém, essa não era uma solução ideal, pois o tempo de espera era definido manualmente. Solução: foi utilizado send e receive para criar uma comunicação de término. O consumidor envia :consumidor_terminou para o processo principal quando conclui sua tarefa. Assim, o processo principal aguarda uma confirmação real de que o consumidor terminou.
 
 ### Comunicação entre tarefas em processos diferentes em computadores diferentes
 
-FIXME
 > texto explicando o código
+
+Nesta etapa, será implementada a comunicação entre processos executados em computadores diferentes. Para isso, será utilizado o sistema de distribuição do próprio Elixir, que permite que processos localizados em diferentes máquinas se comuniquem através da rede. Diferentemente da etapa anterior, em que os processos produtor e consumidor estavam no mesmo computador, nesta etapa cada processo será executado em um computador diferente. A comunicação continuará utilizando o conceito de envio e recebimento de mensagens, porém os processos estarão conectados por meio da rede.
+
 > mostrar o código completo
 
 FIXME
