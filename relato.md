@@ -92,18 +92,57 @@ https://github.com/user-attachments/assets/ff767202-443a-4256-8748-ecaad630a8ed
 Nesta etapa, será implementada a comunicação entre processos executados em computadores diferentes. Para isso, será utilizado o sistema de distribuição do próprio Elixir, que permite que processos localizados em diferentes máquinas se comuniquem através da rede. Diferentemente da etapa anterior, em que os processos produtor e consumidor estavam no mesmo computador, nesta etapa cada processo será executado em um computador diferente. A comunicação continuará utilizando o conceito de envio e recebimento de mensagens, porém os processos estarão conectados por meio da rede.
 
 > mostrar o código completo
+defmodule Distribuido do
+  def rodar_consumidor do
+    Process.register(self(), :consumidor)
+    IO.puts("### Consumidor aguardando mensagem via rede...")
 
-FIXME
+    receive do
+      {:dados, dados} ->
+        resultado = Enum.sum(dados)
+        IO.puts("### Dados recebidos via rede!")
+        IO.puts("### Resultado da soma -> #{resultado}")
+    end
+  end
+
+  def rodar_produtor(no_consumidor) do
+    IO.puts("# Produzindo dados no Produtor...")
+    dados = for _ <- 1..100, do: :rand.uniform(111) - 1
+
+    send({:consumidor, no_consumidor}, {:dados, dados})
+    IO.puts("# Dados enviados para #{inspect(no_consumidor)} com sucesso!")
+  end
+end
+
 > explicar como foi executado
-> mostrar as saídas do terminal
-> mostrar as saídas do terminal
 
-FIXME
+A execução da comunicação distribuída foi realizada dentro do ambiente Docker utilizando dois terminais para simular a comunicação através de nós da BEAM (máquina virtual do Elixir):
+Início do Nó Consumidor (Terminal 1):
+ docker run -it --rm --network host -v $(pwd):/app -w /app elixir_app iex --name consumidor@127.0.0.1 --cookie segredo src/Elixir/distribuido.exs
+No console interativo do Elixir (iex), a função de escuta foi ativada:
+ Distribuido.rodar_consumidor()
+Início do Nó Produtor e Envio de Dados (Terminal 2):
+ docker run -it --rm --network host -v $(pwd):/app -w /app elixir_app iex --name produtor@127.0.0.1 --cookie segredo src/Elixir/distribuido.exs
+No console interativo do produtor, os dados foram enviados para o nó do consumidor:
+ Distribuido.rodar_produtor(:"consumidor@127.0.0.1")
+
+> mostrar as saídas do terminal
+Saída no Terminal(Produtor):
+ # Produzindo dados no Produtor...
+# Dados enviados para :"consumidor@127.0.0.1" com sucesso!
+> mostrar as saídas do terminal
+Saída do Terminal(Consumidor):
+### Consumidor aguardando mensagem via rede...
+### Dados recebidos via rede!
+### Resultado da soma -> 5851
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
-
+Durante a execução da comunicação distribuída, identificou-se que o utilitário do Elixir não estava instalado diretamente no sistema base do ambiente do Codespaces. Esse entrave foi contornado executando os comandos interativos do console do Elixir dentro de containers Docker com a opção de rede do host habilitada. Além disso, o Docker inicialmente não localizou o arquivo da aplicação em seu caminho relativo padrão, o que foi resolvido ao mapear o diretório de trabalho atual diretamente para dentro do container por meio de volumes.
 ## Considerações finais
 
 FIXME
 > conseguiu implementar tudo e executar?
+Todas as etapas propostas na atividade foram implementadas e executadas com sucesso no ambiente Docker, cobrindo a execução sequencial, a concorrência no mesmo computador e a comunicação distribuída entre processos em nós distintos da rede.
 > qual foi o aprendizado nesse trabalho?
+O desenvolvimento do projeto proporcionou um entendimento prático do Modelo de Atores nativo da máquina virtual do Elixir, demonstrando como processos leves trocam mensagens de forma assíncrona sem depender de memória compartilhada ou bibliotecas externas de rede. Também permitiu compreender a importância da sincronização explícita por confirmação de término em substituição a tempos de espera arbitrários, além de evidenciar a facilidade de escalar uma aplicação local para uma arquitetura distribuída utilizando nós nomeados e autenticação por cookie.
 > alguma recomendação para próximos alunos?
+Recomenda-se atenção constante ao mapeamento de volumes no Docker para garantir a visibilidade dos arquivos entre a máquina hospedeira e o container, bem como a estruturação rigorosa de mensagens de resposta entre os processos para assegurar o fluxo correto de sincronização da execução.
