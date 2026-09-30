@@ -135,6 +135,8 @@ Saída do Terminal(Consumidor):
 ### Consumidor aguardando mensagem via rede...
 ### Dados recebidos via rede!
 ### Resultado da soma -> 5851
+
+[Clique aqui para ver o vídeo da execução distribuída](execucao.mp4)
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
 Durante a execução da comunicação distribuída, identificou-se que o utilitário do Elixir não estava instalado diretamente no sistema base do ambiente do Codespaces. Esse entrave foi contornado executando os comandos interativos do console do Elixir dentro de containers Docker com a opção de rede do host habilitada. Além disso, o Docker inicialmente não localizou o arquivo da aplicação em seu caminho relativo padrão, o que foi resolvido ao mapear o diretório de trabalho atual diretamente para dentro do container por meio de volumes.
 ## Considerações finais
