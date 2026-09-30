@@ -82,6 +82,7 @@ Na primeira versão, foi utilizado Process.sleep para esperar os processos termi
 > Video de teste da execução dos codigo sequencial.exs e paralelo.exs:
 
 https://github.com/user-attachments/assets/b49e0959-0efa-42b8-a39f-03f5f66688d9
+
 https://github.com/user-attachments/assets/ff767202-443a-4256-8748-ecaad630a8ed
 
 ### Comunicação entre tarefas em processos diferentes em computadores diferentes
