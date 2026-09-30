@@ -79,6 +79,11 @@ O código foi executado utilizando o Docker. O arquivo exemplo_main.exs foi conf
 
 Na primeira versão, foi utilizado Process.sleep para esperar os processos terminarem. Porém, essa não era uma solução ideal, pois o tempo de espera era definido manualmente. Solução: foi utilizado send e receive para criar uma comunicação de término. O consumidor envia :consumidor_terminou para o processo principal quando conclui sua tarefa. Assim, o processo principal aguarda uma confirmação real de que o consumidor terminou.
 
+> Video de teste da execução dos codigo sequencial.exs e paralelo.exs:
+
+https://github.com/user-attachments/assets/b49e0959-0efa-42b8-a39f-03f5f66688d9
+https://github.com/user-attachments/assets/ff767202-443a-4256-8748-ecaad630a8ed
+
 ### Comunicação entre tarefas em processos diferentes em computadores diferentes
 
 > texto explicando o código
