@@ -114,6 +114,16 @@ defmodule Distribuido do
   end
 end
 
+> código Docker para fazer a execução
+
+docker run -it --rm --network host -v $(pwd):/app -w /app elixir_app iex --name consumidor@127.0.0.1 --cookie segredo src/Elixir/distribuido.exs
+
+Distribuido.rodar_consumidor()
+
+docker run -it --rm --network host -v $(pwd):/app -w /app elixir_app iex --name produtor@127.0.0.1 --cookie segredo src/Elixir/distribuido.exs
+
+Distribuido.rodar_produtor(:"consumidor@127.0.0.1")
+
 > explicar como foi executado
 
 A execução da comunicação distribuída foi realizada dentro do ambiente Docker utilizando dois terminais para simular a comunicação através de nós da BEAM (máquina virtual do Elixir):
