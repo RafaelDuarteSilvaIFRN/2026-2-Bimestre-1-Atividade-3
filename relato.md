@@ -171,9 +171,11 @@ O projeto foi executado utilizando o comando docker compose up --build, que inic
 > mostrar as saídas do terminal
 
 **Saida do produtor**
+
 <img width="827" height="188" alt="image" src="https://github.com/user-attachments/assets/bd622511-1c2c-408f-af4c-05c0a641a824" />
 
 **Saida do Consumidor**
+
 <img width="861" height="151" alt="image" src="https://github.com/user-attachments/assets/ee98bf13-7ba7-4f04-ba6d-3dd9924b7716" />
 
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
