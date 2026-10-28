@@ -149,6 +149,41 @@ Saída do Terminal(Consumidor):
 [Clique aqui para ver o vídeo da execução distribuída](execucao.mp4)
 > se houve problema na execução, enumerar os problemas e suas respectivas soluções
 Durante a execução da comunicação distribuída, identificou-se que o utilitário do Elixir não estava instalado diretamente no sistema base do ambiente do Codespaces. Esse entrave foi contornado executando os comandos interativos do console do Elixir dentro de containers Docker com a opção de rede do host habilitada. Além disso, o Docker inicialmente não localizou o arquivo da aplicação em seu caminho relativo padrão, o que foi resolvido ao mapear o diretório de trabalho atual diretamente para dentro do container por meio de volumes.
+
+### Comunicação entre processos utilizando sockets TCP/IP
+
+> texto explicando o código
+
+O objetivo da atividade foi implementar a comunicação entre dois programas utilizando sockets TCP/IP na linguagem Elixir. Para isso, foram criados dois programas: o produtor e o consumidor. O produtor aguarda conexões na porta 5000, recebe mensagens e envia uma resposta. O consumidor conecta-se ao produtor, envia uma mensagem e aguarda a resposta. Para realizar essa comunicação, foi utilizada a biblioteca :gen_tcp do Elixir.
+
+> mostrar o código completo
+
+**produtor.exs**
+<img width="587" height="782" alt="image" src="https://github.com/user-attachments/assets/da1089e5-bdb6-4ca6-9863-45eba47ddd07" />
+
+**consumidor.exs**
+<img width="554" height="576" alt="image" src="https://github.com/user-attachments/assets/a92b2470-7c3e-4180-a85e-6678bfd529d9" />
+
+> explicar como foi executado
+
+O projeto foi executado utilizando o comando docker compose up --build, que iniciou os contêineres do produtor e do consumidor. O produtor aguardou uma conexão na porta 5000, enquanto o consumidor enviou uma mensagem e recebeu uma resposta. A comunicação foi confirmada pelas saídas exibidas nos terminais.
+
+> mostrar as saídas do terminal
+
+**Saida do produtor**
+<img width="827" height="188" alt="image" src="https://github.com/user-attachments/assets/bd622511-1c2c-408f-af4c-05c0a641a824" />
+
+**Saida do Consumidor**
+<img width="861" height="151" alt="image" src="https://github.com/user-attachments/assets/ee98bf13-7ba7-4f04-ba6d-3dd9924b7716" />
+
+> se houve problema na execução, enumerar os problemas e suas respectivas soluções
+
+Durante a execução do projeto, ocorreram alguns erros. O primeiro foi uma falha na conexão entre o produtor e o consumidor, que foi resolvida alterando o endereço de conexão e ajustando o Docker Compose. Também houve um erro na formatação do arquivo docker-compose.yml, corrigido após ajustar sua estrutura. Por fim, ocorreu uma falha na construção das imagens Docker, solucionada limpando o cache de construção com o comando docker builder prune -a e executando a construção novamente.
+
+> Video de teste da execução dos codigo "Comunicação entre processos utilizando sockets TCP/IP"
+
+https://github.com/user-attachments/assets/93bf1573-3b75-4592-b57c-969e1470482d
+
 ## Considerações finais
 
 FIXME
