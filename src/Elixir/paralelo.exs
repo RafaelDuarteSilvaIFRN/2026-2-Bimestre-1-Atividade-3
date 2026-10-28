@@ -55,3 +55,5 @@ defmodule Paralelo do
   end
 
 end
+
+Paralelo.principal()

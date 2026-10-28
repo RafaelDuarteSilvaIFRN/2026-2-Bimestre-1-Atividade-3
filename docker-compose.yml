@@ -1,0 +1,27 @@
+
+services:
+  produtor:
+    build: .
+    command: ["elixir", "produtor.exs"]
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src/Elixir:/app
+    networks:
+      - elixir-net
+
+  consumidor:
+    build: .
+    command: ["elixir", "consumidor.exs"]
+    volumes:
+      - ./src/Elixir:/app
+    depends_on:
+      - produtor
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - elixir-net
+
+networks:
+  elixir-net:
+    driver: bridge
